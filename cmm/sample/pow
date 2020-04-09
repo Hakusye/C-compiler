@@ -1,0 +1,28 @@
+pow : F POW NUMBER
+{
+	/* 本質的にはforと同じ */
+	/* エラー吐くけど、やりたいことはコメント文見ればわかる */
+	cptr* sum = makecode(O_LIT,0,1);
+	cptr* left = copy_cptr($1.code);
+	cptr* right = copy_cptr($3.code);
+	cptr* tmp;
+	int for0 = makelabel();
+	int for1 = makelabel();
+	/* init をinitしつつ、ラベル設置 */
+	tmp = mergecode($3.code,makecode(O_LAB, 0, for0)); 
+	/* falseでroopしゅうりょう　*/
+	tmp = mergecode(tmp,makecode(O_LIT,0,0));
+	tmp = mergecode(mergecode(tmp,makecode(O_OPR,0,9)),makecode(O_JPC,0,for1));
+	/* 満を持して中身計算  */
+	sum = mergecode(mergecode(sum,copy_cptr(left)),makecode(O_OPR,0,2));
+	tmp = mergecode(tmp,copy_cptr(sum));
+	/* forをひとつ進める */
+	right = mergecode(mergecode(right,makecode(O_LIT,0,1)),makecode(O_OPR,0,4));
+	tmp = mergecode(tmp,copy_cptr(right));
+	/* ループ処理 */
+	tmp = mergecode(tmp,makecode(O_JMP,0,for0));
+	tmp = mergecode(tmp,makecode(O_LAB,0,for1));
+	
+	$$.code = sum;
+
+}

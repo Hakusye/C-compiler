@@ -1,0 +1,21 @@
+fiba(n){
+  if n == 1 then return 1; endif;
+  if n == 2 then return 1; endif;
+  return fibb(n - 1) + fiba(n - 2);
+}
+
+fibb(n){
+  if n == 1 then return 1; endif;
+  if n == 2 then return 1; endif;
+  return fibb(n - 1) + fibb(n - 2);
+}
+
+main {
+  var i;
+
+  read i;
+
+  write fiba(i);
+  writeln;
+}
+
